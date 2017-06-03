@@ -1,5 +1,6 @@
 FROM debian:8.8
-MAINTAINER Patrick Ringl version: 0.1
+LABEL maintainer "Patrick Ringl"
+LABEL version="0.2"
 RUN apt-get update && apt-get install -y git libssl-dev python-dev vim python-apt python-pip libffi-dev
 RUN pip install virtualenv
 WORKDIR /opt
