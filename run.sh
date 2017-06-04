@@ -65,6 +65,7 @@ function main() {
 		#
 		# seemingly not a TravisCI build
 		#
+		run_cmd "${CONTAINER_ID}" "printenv GIT_REPO_URL && printenv ANSIBLE_VERSION"
 		ROLE_NAME=$(basename "${GIT_REPO_URL}" ".git")
 		run_cmd "${CONTAINER_ID}" "git clone ${GIT_REPO_URL} ${ROLE_NAME}"
 		cd "${ROLE_NAME}"
