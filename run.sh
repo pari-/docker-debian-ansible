@@ -83,28 +83,30 @@ function main() {
 	#
 	run_cmd "${CONTAINER_ID}" "docker run --detach --volume=${LOCAL_ROLE_PATH}:${REMOTE_ROLE_PATH}/${ROLE_NAME}:rw --name ${CONTAINER_ID} ${OPTS} ${IMAGE} ${INIT}"
 
+	CONTAINER_PATH_VAR="$(docker exec --tty ${CONTAINER_ID} printenv -0 | sed -e 's/.*PATH=\([^\x0]\+\)\x0.*/\1/')"
+
 	#
 	# check if there are any requirements to pull in, if yes: do so 
 	#
 	if [ -f "${LOCAL_ROLE_PATH}/requirements.yml" ]; then
-		run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$PATH TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-galaxy install -r ${REMOTE_ROLE_PATH}/${ROLE_NAME}/requirements.yml"
+		run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-galaxy install -r ${REMOTE_ROLE_PATH}/${ROLE_NAME}/requirements.yml"
 	fi
 	
 	#
 	# perform a basic syntax-check and list tasks
 	#
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$PATH TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, --syntax-check --list-tasks"
-	
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, --syntax-check --list-tasks --sudo"
+
 	#
 	# run the playbook
 	#
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$PATH TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --sudo"
 
 	#
 	# check for idempotence
 	#
 	TMP_DIR="$(mktemp)"
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$PATH TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s | tee ${TMP_DIR}; grep -q 'changed=0.*failed=0' ${TMP_DIR} && (echo 'Idempotence? ... PASS!' && exit 0) || (echo 'Idempotence? ... FAIL!' && exit 1)"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s | tee ${TMP_DIR}; grep -q 'changed=0.*failed=0' ${TMP_DIR} && (echo 'Idempotence? ... PASS!' && exit 0) || (echo 'Idempotence? ... FAIL!' && exit 1)"
 
 	#
 	# if configured, clean up "the mess"! ;-)
