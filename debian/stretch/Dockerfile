@@ -1,7 +1,7 @@
-FROM debian:8.8
+FROM debian:9.0
 LABEL maintainer "Patrick Ringl"
-LABEL version="0.2"
-RUN apt-get update && apt-get install -y git libssl-dev python-dev vim python-apt python-pip libffi-dev
+LABEL version="0.3"
+RUN apt-get update && apt-get install -y git libssl-dev python-dev vim python-apt python-pip libffi-dev libyaml-perl
 RUN pip install virtualenv
 WORKDIR /opt
 RUN virtualenv ansible-2.3.1.0

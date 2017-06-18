@@ -1,4 +1,4 @@
-# docker-debian8-ansible
+# docker-debian-ansible
 
 A repository used for automated Docker Hub builds + various other stuff regarding automated (docker-driven) ansible tests
 
@@ -12,13 +12,13 @@ A repository used for automated Docker Hub builds + various other stuff regardin
 
 ## General
 
-The image is based on debian:8.8 and contains Ansible (located in /opt/) in the following flavours:
+The images are based on debian (jessie and stretch) and contain Ansible (located in /opt/) in the following flavours:
   - "2.3.1.0"
   - "2.2.3.0"
   - "2.1.6.0"
   - "2.0.2.0"
 
-The automated build(s) can be found here: [irap/docker-debian8-ansibke](https://hub.docker.com/r/irap/docker-debian8-ansible/)
+The automated build(s) can be found here: [irap/docker-debian-ansible](https://hub.docker.com/r/irap/docker-debian-ansible/)
 
 ## License
 
