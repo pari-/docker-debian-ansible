@@ -22,7 +22,7 @@ function run_cmd() {
 	then
 		printf "\n"${R}"The command \"%s\" failed with $exit_code.\n\n"${N} "$CMD"
 		LEFTOVER_CONTAINER=$(docker ps -f name="${CONTAINER_NAME}" -q)
-		if [ -n "${LEFTOVER_CONTAINER}" ]; then
+		if [ -n "${LEFTOVER_CONTAINER}" ] && [ "${CLEANUP}" = true ]; then
 			docker stop "${LEFTOVER_CONTAINER}"
 			docker rm -f "${LEFTOVER_CONTAINER}"
 		fi
@@ -69,6 +69,9 @@ function main() {
 		ROLE_NAME=$(basename "${GIT_REPO_URL}" ".git")
 		run_cmd "${CONTAINER_ID}" "git clone ${GIT_REPO_URL} ${ROLE_NAME}"
 		cd "${ROLE_NAME}"
+		if [ -n "${BRANCH}" ]; then
+			run_cmd "${CONTAINER_ID}" "git checkout ${BRANCH}"
+		fi
 	fi
 
 	LOCAL_ROLE_PATH="$PWD"
