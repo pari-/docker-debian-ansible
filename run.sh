@@ -101,6 +101,11 @@ function main() {
 	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, --syntax-check --list-tasks --sudo"
 
 	#
+	# run the playbook in --check-mode
+	#
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --sudo --check"
+
+	#
 	# run the playbook
 	#
 	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --sudo"
