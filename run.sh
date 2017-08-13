@@ -34,7 +34,7 @@ function main() {
 	#
 	# variable control defaults
 	#
-	IMAGE=${IMAGE:-"irap/docker-debian8-ansible"}
+	IMAGE=${IMAGE:-"irap/docker-debian-ansible"}
 	PLAYBOOK=${PLAYBOOK:-"test.yml"}
 	CLEANUP=${CLEANUP:-"true"}
 
