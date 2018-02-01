@@ -13,7 +13,7 @@ A repository used for automated Docker Hub builds + various other stuff regardin
 ## General
 
 The images are based on debian (jessie and stretch) and contain Ansible (located in /opt/) in the following flavours:
-  - "2.4.2.0"
+  - "2.4.3.0"
   - "2.3.3.0"
   - "2.2.3.0"
   - "2.1.6.0"
