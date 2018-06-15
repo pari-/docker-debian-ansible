@@ -1,0 +1,22 @@
+---
+
+before_install:
+  - "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+  - "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\""
+  - "sudo apt-get update"
+  - "sudo apt-get -y install docker-ce"
+branches:
+  only:
+    - "master"
+env:
+  global:
+    secure: "oe3+mSPANMvafs+z8jo7jfiecAb12oLSqgJxgBhMXqAIhGiq/pYl7EG81//+Q5MP0zxNu5q9gcDKxQ5UVKHpKPd9t85efao0e7ji1YVu1JesC3Kbn/U8FNHELB0sx1XbJFIMKgIVA+bsBozNIussOYo8034L09xXCD2Drb93YOFwPvdqQSVj/2Qjbos9NHaeVnItBD/YwpbDooR2BcwAPcWB4k3vC72xxBs+8zQZcYGQj48lbT8A+Hij7wFSToz3OowOF6ytwEr/ojRu2dNDpD/mC50T1OzllnMr9ri5rta5LDcS8+WKlvIcul6KJvGHb9n/MKKTyHxqdgS/4q7knq2iC+tVazMWiFYnzNJ77Y6hpzB0qLjjmhfhQK8pW+Vz4v3uVwJ5DIUqOrvqKq9asVaJDQldgdDIszgtSPoTnqmICS6PGyIeIzHQPuPUgVNmEEN4pWM0GRoPAEX4iLlKD1UkLWFH02J88W04HV7hN40je8xzOtKeLrKqw33L2DxCgh73BqGU097zcfFgcbWfN3JieHa8kOUz96Klzz1nvq8REBI9oXzjwP3NqbPsIFgyrERRWWhOhuSx76cay6cpd3fFO2ZPgeosJy/0WeL0FEXXGihtVkGb6G3FiTslWYEyQl2aAXuBgt3dz2M1LjvYNQSICWLLEfi11rrJcQ/T3rg="
+language: "python"
+notifications:
+  email: false
+python:
+  - "2.7"
+script:
+  - "curl -H 'Content-Type: application/json' --data '{\"source_type\": \"Branch\", \"source_name\": \"master\"}' -X POST https://registry.hub.docker.com/u/irap/docker-debian-ansible/trigger/${DOCKER_HUB_TRIGGER_TOKEN}/"
+services: "docker"
+sudo: "required"
