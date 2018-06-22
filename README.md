@@ -14,7 +14,7 @@ A repository used for automated Docker Hub builds + various other stuff regardin
 
 The images are based on Debian GNU/Linux (release: stretch) and contain Ansible (located in /opt/) in the following version flavours:
   - "2.5.5.0"
-  - "2.4.4.0"
+  - "2.4.5.0"
   - "2.3.3.0"
   - "2.2.3.0"
 
