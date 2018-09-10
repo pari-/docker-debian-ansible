@@ -98,12 +98,12 @@ function main() {
 	#
 	# perform a basic syntax-check and list tasks
 	#
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, --syntax-check --list-tasks --sudo"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, --syntax-check --list-tasks --become"
 
 	#
 	# run the playbook
 	#
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --sudo"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --become"
 
 	#
 	# check for idempotence
