@@ -103,13 +103,13 @@ function main() {
 	#
 	# run the playbook
 	#
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s -vvvv --become"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -vvvv --become"
 
 	#
 	# check for idempotence
 	#
 	TMP_DIR="$(mktemp)"
-	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local -s | tee ${TMP_DIR}; grep -q 'changed=0.*failed=0' ${TMP_DIR} && (echo 'Idempotence? ... PASS!' && exit 0) || (echo 'Idempotence? ... FAIL!' && exit 1)"
+	run_cmd "${CONTAINER_ID}" "docker exec --tty ${CONTAINER_ID} env PATH=/opt/ansible-${ANSIBLE_VERSION}/bin:$CONTAINER_PATH_VAR TERM=xterm ANSIBLE_CONFIG=/etc/ansible/roles/${ROLE_NAME}/ansible.cfg ansible-playbook ${REMOTE_ROLE_PATH}/${ROLE_NAME}/test.yml -i localhost, -c local --become | tee ${TMP_DIR}; grep -q 'changed=0.*failed=0' ${TMP_DIR} && (echo 'Idempotence? ... PASS!' && exit 0) || (echo 'Idempotence? ... FAIL!' && exit 1)"
 
 	#
 	# if configured, clean up "the mess"! ;-)
