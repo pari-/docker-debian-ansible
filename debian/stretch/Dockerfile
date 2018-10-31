@@ -1,7 +1,7 @@
 FROM debian:stretch
-ARG ANSIBLE_VERSION="2.7.0"
+ARG ANSIBLE_VERSION="2.7.1"
 LABEL maintainer "Patrick Ringl"
-LABEL version="0.21"
+LABEL version="0.22"
 RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
 RUN apt-get update && apt-get install -y git libssl-dev python-dev vim python-apt python-pip libffi-dev libyaml-perl procps systemd
 RUN pip install virtualenv
