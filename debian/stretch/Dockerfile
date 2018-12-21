@@ -1,5 +1,5 @@
 FROM debian:stretch
-ARG ANSIBLE_VERSION="2.7.2"
+ARG ANSIBLE_VERSION="2.7.5"
 LABEL maintainer "Patrick Ringl"
 LABEL version="0.23"
 RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list
